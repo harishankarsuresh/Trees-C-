@@ -1,0 +1,121 @@
+//Logic-http://www.cprogramming.com/tutorial/lesson18.html
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+//Node class to represent each node
+template <typename T>
+struct node
+{
+
+	T data;
+	node *left;
+	node *right;
+};
+
+//btree class implementation to implement data abstraction ie.binding up of data 
+//and keeping "root" safe through private access
+template <typename T>
+class btree
+{
+public:
+	btree();
+	~btree();
+	void insertnode(T data);
+	void searchnode(T data);
+	void deletenode(T data);
+	void deletetree();
+	void printtree();
+private:
+	void insertnode(T data,node<T> *leaf);
+	void searchnode(T data,node<T> *leaf);
+	void deletenode(T data,node<T> *leaf);
+	void deletetree(node<T> *leaf);
+	node<T> *root;
+};
+
+//constructor
+template <typename T>
+btree<T>::btree()
+{
+	cout<<"Contrcutor"<<endl;
+	root = NULL;
+}
+
+//Destructor
+template <typename T>
+btree<T>::~btree()
+{
+	cout<<"Destructor"<<endl;
+}
+
+//public insert function
+template <class T>
+void btree<T>::insertnode(T data)
+{
+	cout<<"reached public insertnode"<<endl;
+	if(root != NULL)
+		insertnode(data,root);
+	else
+	{
+		root = new node<T>;	//Creating new node of type T
+		root -> data = data;
+		root -> left = NULL;
+		root -> right = NULL;
+	}
+}
+
+//Private insert function
+template <class T>
+void btree<T>::insertnode(T data, node<T> *leaf)
+{
+	cout<<"reached private insertnode"<<endl;
+	if(data <= (leaf->data))
+	{
+		cout<<"have reached line 73"<<endl;
+		if(leaf->left!=NULL){
+
+			insertnode(data,leaf->left);
+		}
+		else
+		{
+			cout<<"have reached line 77"<<endl;
+			leaf->left = new node<T>;	//Creating new node of type T
+			leaf->left->data = data;
+			leaf->left->left = NULL;
+			leaf->left->right = NULL;
+		}
+	}
+	else
+ 	{
+		if(leaf->right!=NULL)
+			insertnode(data,leaf->right);
+		else
+		{
+			leaf->right = new node<T>;	//Creating new node of type T
+			leaf->right->data = data;
+			leaf->right->left = NULL;
+			leaf->right->right = NULL;
+		}
+	}
+}
+
+
+//public print tree function
+template <class T>
+void btree<T>::printtree()
+{
+	cout<<root->data<<endl;
+}
+
+
+int main(int argc, char const *argv[])
+{
+	/* code */
+btree<int> bt1;
+int g=5;
+bt1.insertnode(g);
+bt1.printtree();
+return 0;
+}
